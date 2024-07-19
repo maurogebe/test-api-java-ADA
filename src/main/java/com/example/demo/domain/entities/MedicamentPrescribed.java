@@ -6,20 +6,27 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Entity
-@Table (name="MedicamentPrescribed")
+@Table (name = "medicament_prescribed")
 public class MedicamentPrescribed {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column (name="id")
+    @Column (name = "id")
     private long id;
-    @Column (name="medicament_id")
-    private Medicament medicament;
-    @Column (name="quaantity_id")
+
+    @Column (name = "quantity")
     private int quantity;
-    @Column (name="instructions_id")
+
+    @Column (name = "instructions")
     private String instructions;
-    @OneToMany
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "medicament_id")
+    private Medicament medicament;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "prescription_id")
     private Prescription prescription;
+
     public MedicamentPrescribed() {
     }
 }

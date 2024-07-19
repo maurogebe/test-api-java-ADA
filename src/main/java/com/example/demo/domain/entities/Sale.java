@@ -4,22 +4,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "Sale")
+@Table(name = "sale")
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id")
+    @Column (name = "id")
     private long id;
-    @Column (name="total_id")
+
+    @Column (name = "total")
     private Double total;
-    @Column (name="SaleDate_id")
-    private LocalDate SaleDate;
 
-    private List <MedicamentPrescribed> medicamentprescribeds;
+    @Column (name = "sale_date")
+    private LocalDate saleDate;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    private List<MedicamentSold> medicamentsSold;
 
     public Sale() {
     }

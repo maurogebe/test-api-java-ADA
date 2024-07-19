@@ -9,20 +9,26 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "Prescription")
+@Table(name = "prescription")
 
 public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id")
+    @Column (name = "id")
     private long id;
-    @Column (name="issueDate_id")
-    private LocalDate issueDate;
-    @Column (name="DoctorName_id")
-    private String DoctorName;
 
+    @Column (name = "issue_date")
+    private LocalDate issueDate;
+
+    @Column (name = "doctor_name")
+    private String doctorName;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
     private Patient patient;
-    private List<MedicamentPrescribed> medicamentprescribeds;
+
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
+    private List<MedicamentPrescribed> medicamentsPrescribed;
 
     public Prescription() {
     }

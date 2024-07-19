@@ -3,23 +3,26 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "Allergy")
-
+@Table(name = "allergy")
 public class Allergy {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
-    @ManyToMany  (cascade = CascadeType.ALL)
-    private Patient patient;
 
+    @ManyToMany(mappedBy = "allergies")
+    private Set<Patient> patients;
 
     public Allergy() {
     }
