@@ -1,36 +1,46 @@
 package com.example.demo.domain.entities;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.List;
+import lombok.Data;
 @Data
-@AllArgsConstructor
-@Entity
-@Table(name = "prescription")
-
 public class Prescription {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "id")
-    private long id;
 
-    @Column (name = "issue_date")
+    private Long id;
     private LocalDate issueDate;
-
-    @Column (name = "doctor_name")
-    private String doctorName;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
+    private String String;
     private Patient patient;
+    private List<MedicamentPrescribed> medicamentprescribeds;
 
-    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
-    private List<MedicamentPrescribed> medicamentsPrescribed;
+    public Prescription(Long id, LocalDate issueDate, java.lang.String string, Patient patient, List<MedicamentPrescribed> medicamentprescribeds) {
+        this.id = id;
+        this.issueDate = issueDate;
+        String = string;
+        this.patient = patient;
+        this.medicamentprescribeds = medicamentprescribeds;
+    }
 
     public Prescription() {
     }
+
+    public void uploadFile() {
+
+    }
+
+    public void createPrescription(){
+
+    }
+
+    public void updatePrescription(){
+
+    }
+
+    public void printPrescription(long id)  {
+
+    }
+
+    public void searchPrescription (long id) {
+
+    }
+
 }
 
