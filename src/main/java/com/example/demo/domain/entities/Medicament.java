@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicament")
+
 public class Medicament {
 
     @Id

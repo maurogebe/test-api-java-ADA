@@ -9,7 +9,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "allergy")
+
 public class Allergy {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id")
