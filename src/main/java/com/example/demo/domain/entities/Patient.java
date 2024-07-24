@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="Patient")
+
 public class Patient {
 
     @Id

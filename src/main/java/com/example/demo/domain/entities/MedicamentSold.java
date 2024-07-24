@@ -7,7 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Entity
 @Table(name = "MedicamentSold")
+
 public class MedicamentSold {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id")
