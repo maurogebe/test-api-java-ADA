@@ -3,6 +3,7 @@ package com.example.demo.domain.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
