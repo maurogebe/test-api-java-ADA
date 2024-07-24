@@ -3,6 +3,7 @@ package com.example.demo.domain.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="Patient")
+
 public class Patient {
 
     @Id

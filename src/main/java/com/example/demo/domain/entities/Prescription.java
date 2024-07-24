@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "prescription")
 
 public class Prescription {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")
@@ -28,7 +29,7 @@ public class Prescription {
     private Patient patient;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
-    private List<MedicamentPrescribed> medicamentsPrescribed;
+    private List<MedicamentPrescribed> medicamentPrescribed;
 
     public Prescription() {
     }
