@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PatientUsecase {
@@ -53,12 +54,11 @@ public class PatientUsecase {
 
         // Actualizar los campos del paciente existente con los datos del DTO
         existingPatient.setName(patientUpdateRequestDTO.getName());
-        existingPatient.setLastName(patientUpdateRequestDTO.getLastName());
         existingPatient.setEmail(patientUpdateRequestDTO.getEmail());
         existingPatient.setHealthInsuranceNumber(patientUpdateRequestDTO.getHealthInsuranceNumber());
         existingPatient.setBirthDate(patientUpdateRequestDTO.getBirthDate());
 
-        List<Allergy> updatedAllergies = patientUpdateRequestDTO.getAllergies();
+        Set<Allergy> updatedAllergies = patientUpdateRequestDTO.getAllergies();
         existingPatient.setAllergies(updatedAllergies);  // Aquí asumiendo que allergies es una lista de alergias actualizada
 
         Patient updatedPatient = patientRepository.save(existingPatient);
