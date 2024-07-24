@@ -35,7 +35,7 @@ public class SaleController {
     public ResponseEntity<Sale> viewSale(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.getSaleById(id));
     }
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteByIdSale(@PathVariable("id")Long id){
         saleUseCase.getSaleById(id);
         saleUseCase.deleteByIdSale(id);
