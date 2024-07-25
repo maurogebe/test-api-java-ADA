@@ -1,33 +1,53 @@
 package com.example.demo.domain.entities;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
-import lombok.Data;
 @Data
+@AllArgsConstructor
+@Entity
+@Table(name = "sale")
+
 public class Sale {
 
-    private Long id;
-    private Patient Patient;
-    private Double total;
-    private LocalDate saleDate;
-    private List <MedicamentPrescribed> medicamentprescribeds;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name = "id")
+    private long id;
 
-    public Sale(Long id, Patient patient, Double total, LocalDate saleDate, List<MedicamentPrescribed> medicamentprescribeds) {
-        this.id = id;
-        Patient = patient;
-        this.total = total;
-        this.saleDate = saleDate;
-        this.medicamentprescribeds = medicamentprescribeds;
-    }
+    @Column (name = "total")
+    private Double total;
+
+    @Column (name = "sale_date")
+    private LocalDate saleDate;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    private List<MedicamentSold> medicamentsSold;
 
     public Sale() {
     }
 
-    public void generateAndSendSaleReceipt() {
-
-    }
-
-    public void viewSale () {
-
+    public void setMedicamentsSold(List<MedicamentSold> medicamentsSold) {
+        for (MedicamentSold medicamentSold : medicamentsSold) {
+            if (medicamentSold.getId() >= 0){
+                OptionalInt indexOpt = IntStream.range(0, medicamentsSold.size())
+                        .filter(i -> medicamentsSold.get(i).getId() == medicamentSold.getId())
+                        .findFirst();
+                int index = indexOpt.orElse(-1);
+                if (index >= 0) this.medicamentsSold.add(index, medicamentSold);
+            }  else {
+                this.medicamentsSold.add(medicamentSold);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +20,5 @@ public class PatientUpdateRequestDTO {
     private String email;
     private String healthInsuranceNumber;
     private LocalDate birthDate;
-    private List<Allergy> allergies;
+    private Set<Allergy> allergies;
 }

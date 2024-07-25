@@ -1,19 +1,31 @@
 package com.example.demo.domain.entities;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+
 @Data
+@AllArgsConstructor
+@Entity
+@Table(name = "MedicamentSold")
+
 public class MedicamentSold {
-private Long id;
-private Sale sale;
-private Medicament medicament;
-private int quantity;
 
-public MedicamentSold(Long id, Sale sale, Medicament medicament, int quantity) {
-    this.id = id;
-    this.sale = sale;
-    this.medicament = medicament;
-    this.quantity = quantity;
-}
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
-public MedicamentSold() {
-}
+    @Column(name = "quantity")
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "medicament_id")
+    private Medicament medicament;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sale_id")
+    private Sale sale;
+
+    public MedicamentSold() {
+    }
 }
