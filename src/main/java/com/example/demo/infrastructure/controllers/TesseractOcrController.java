@@ -12,12 +12,12 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/ocr")
-public class TesseractOcrController {
+public class  TesseractOcrController {
 
     @Autowired
     private TesseractConfigUseCase tesseractConfigUseCase;
     @PostMapping
-    public String recognizeText(@RequestParam (name = "img") MultipartFile img) throws IOException {
-        return tesseractConfigUseCase.recognizeText(img.getInputStream ());
+    public String recognizeText(@RequestParam("img") MultipartFile img) throws IOException {
+        return tesseractConfigUseCase.recognizeText(img.getInputStream());
     }
 }
