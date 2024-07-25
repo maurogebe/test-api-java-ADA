@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -38,15 +39,19 @@ public class Sale {
     }
 
     public void setMedicamentsSold(List<MedicamentSold> medicamentsSold) {
-        for (MedicamentSold medicamentSold : medicamentsSold) {
-            if (medicamentSold.getId() >= 0){
-                OptionalInt indexOpt = IntStream.range(0, medicamentsSold.size())
-                        .filter(i -> medicamentsSold.get(i).getId() == medicamentSold.getId())
-                        .findFirst();
-                int index = indexOpt.orElse(-1);
-                if (index >= 0) this.medicamentsSold.add(index, medicamentSold);
-            }  else {
-                this.medicamentsSold.add(medicamentSold);
+        if(this.medicamentsSold == null) {
+            this.medicamentsSold = medicamentsSold;
+        } else {
+            for (MedicamentSold medicamentSold : medicamentsSold) {
+                if (medicamentSold.getId() >= 0){
+                    OptionalInt indexOpt = IntStream.range(0, medicamentsSold.size())
+                            .filter(i -> medicamentsSold.get(i).getId() == medicamentSold.getId())
+                            .findFirst();
+                    int index = indexOpt.orElse(-1);
+                    if (index >= 0) this.medicamentsSold.add(index, medicamentSold);
+                }  else {
+                    this.medicamentsSold.add(medicamentSold);
+                }
             }
         }
     }
