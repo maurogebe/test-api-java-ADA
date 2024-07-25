@@ -24,7 +24,7 @@ public class SaleUseCase {
     }
 
     public Sale createSale(Sale sale){
-        sale.setTotal(calculateTotalCost(sale.getMedicamentsSold()));
+       // sale.setTotal(calculateTotalCost(sale.getMedicamentsSold()));
         this.isaleRepository.save(sale);
         return (sale);
     }
