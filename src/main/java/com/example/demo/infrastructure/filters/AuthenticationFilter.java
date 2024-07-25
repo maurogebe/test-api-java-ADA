@@ -33,7 +33,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            userId = tokenService.getUserIdFromToken(token);
+            try {
+                userId = tokenService.getUserIdFromToken(token);
+            } catch (RuntimeException e) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+                return;
+            }
         }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -42,6 +47,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token is invalid or expired.");
+                return;
             }
         }
 

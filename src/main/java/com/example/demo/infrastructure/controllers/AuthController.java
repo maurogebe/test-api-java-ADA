@@ -59,7 +59,7 @@ public class AuthController {
         }
 
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(userLogin.getEmail(), userLogin.getPassword())
+            new UsernamePasswordAuthenticationToken(userByEmail.getId(), userLogin.getPassword())
         );
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 

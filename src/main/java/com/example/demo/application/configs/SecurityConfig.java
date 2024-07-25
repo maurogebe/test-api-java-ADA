@@ -2,6 +2,8 @@ package com.example.demo.application.configs;
 
 import com.example.demo.infrastructure.filters.AuthenticationFilter;
 import com.example.demo.application.services.CustomUserDetailsService;
+import com.example.demo.infrastructure.security.CustomAccessDeniedHandler;
+import com.example.demo.infrastructure.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -27,16 +29,19 @@ public class SecurityConfig {
 
     private final AuthenticationFilter authenticationFilter;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfig(@Lazy AuthenticationFilter authenticationFilter, CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(@Lazy AuthenticationFilter authenticationFilter, CustomUserDetailsService customUserDetailsService, CustomAuthenticationEntryPoint customAuthenticationEntryPoint, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.authenticationFilter = authenticationFilter;
         this.customUserDetailsService = customUserDetailsService;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     private AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizeUrlsNew(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry urlRegistry) {
         urlRegistry
             .requestMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
-//            .requestMatchers("/auth/sign-up").hasAnyAuthority()
             .anyRequest().authenticated();
         return urlRegistry;
     }
@@ -47,12 +52,13 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(this::authorizeUrlsNew)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
-            .userDetailsService(customUserDetailsService);
-//            .formLogin(AbstractHttpConfigurer::disable);
+            .userDetailsService(customUserDetailsService)
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler)
+            );
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
