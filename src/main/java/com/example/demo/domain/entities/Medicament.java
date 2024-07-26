@@ -29,8 +29,8 @@ public class Medicament {
     @Column (name = "form")
     private String form;
 
-    @Column (name = "stocks")
-    private int stocks;
+    @Column (name = "stock")
+    private int stock;
 
     @Column (name = "cost")
     private long cost;

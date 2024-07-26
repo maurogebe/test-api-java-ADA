@@ -35,7 +35,7 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> getAllSales(@RequestBody Sale sale){
+    public ResponseEntity<List<Sale>> getAllSales(){
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.getAllSales());
     }
 
