@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name="Patient")
+@Table(name = "patient")
 //@JsonIdentityInfo(scope = Patient.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Patient {
 

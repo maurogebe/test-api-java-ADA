@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "MedicamentSold")
+@Table(name = "medicament_sold")
 //@JsonIdentityInfo(scope = MedicamentSold.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class MedicamentSold {
 
