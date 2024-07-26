@@ -1,4 +1,6 @@
 package com.example.demo.domain.entities;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicament")
-
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Medicament {
 
     @Id
@@ -33,7 +35,7 @@ public class Medicament {
     @Column (name = "cost")
     private long cost;
 
-    @Column (name = "prescriptionRequired_id")
+    @Column (name = "prescriptionRequired")
     private boolean prescriptionRequired;
 
     @OneToMany(mappedBy = "medicament", cascade = CascadeType.ALL)

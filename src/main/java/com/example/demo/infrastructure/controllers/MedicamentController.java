@@ -5,6 +5,7 @@ import com.example.demo.application.usecases.MedicamentUsecase;
 import com.example.demo.domain.dtos.MedicamentRequestDTO;
 import com.example.demo.domain.dtos.MedicamentResponseDTO;
 import com.example.demo.domain.dtos.MedicamentUpdateRequestDTO;
+import com.example.demo.domain.entities.Medicament;
 import com.mailjet.client.errors.MailjetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class MedicamentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MedicamentResponseDTO>> getAllMedicaments(){
+    public ResponseEntity<List<Medicament>> getAllMedicaments(){
         return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.findAll());
     }
 
