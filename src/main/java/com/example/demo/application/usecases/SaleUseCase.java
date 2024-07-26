@@ -44,6 +44,7 @@ public class SaleUseCase {
             if (medicament != null) {
                 medicamentSold.setMedicament(medicament);
             }
+            medicamentSold.setSale(sale);
         });
 
         sale.setTotal(calculateTotalCost(sale.getMedicamentsSold()));

@@ -1,9 +1,12 @@
 package com.example.demo.infrastructure.controllers;
 
+import com.example.demo.application.usecases.MailjetEmailUseCase;
 import com.example.demo.application.usecases.MedicamentUsecase;
 import com.example.demo.domain.dtos.MedicamentRequestDTO;
 import com.example.demo.domain.dtos.MedicamentResponseDTO;
 import com.example.demo.domain.dtos.MedicamentUpdateRequestDTO;
+import com.example.demo.domain.entities.Medicament;
+import com.mailjet.client.errors.MailjetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/medicaments")
+@RequestMapping("/medicament")
 public class MedicamentController {
 
     private final MedicamentUsecase medicamentUsecase;
+    private final MailjetEmailUseCase mailjetEmailUseCase;
 
     @Autowired
-    public MedicamentController(MedicamentUsecase medicamentUsecase){
+    public MedicamentController(MedicamentUsecase medicamentUsecase, MailjetEmailUseCase mailjetEmailUseCase){
         this.medicamentUsecase = medicamentUsecase;
+        this.mailjetEmailUseCase = mailjetEmailUseCase;
     }
 
     @PostMapping
@@ -28,7 +33,7 @@ public class MedicamentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MedicamentResponseDTO>> getAllMedicaments(){
+    public ResponseEntity<List<Medicament>> getAllMedicaments(){
         return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.findAll());
     }
 
