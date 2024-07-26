@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sales")
+@RequestMapping("/sale")
 public class SaleController {
 
     private final SaleUseCase saleUseCase;
