@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "prescription")
-@JsonIdentityInfo(scope = Prescription.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+//@JsonIdentityInfo(scope = Prescription.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Prescription {
 
     @Id

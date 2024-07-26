@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 @Entity
 @Table(name = "sale")
-@JsonIdentityInfo(scope = Sale.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+//@JsonIdentityInfo(scope = Sale.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Sale {
 
     @Id
@@ -34,10 +34,15 @@ public class Sale {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
-    private List<MedicamentSold> medicamentsSold;
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MedicamentSold> medicamentsSold = new ArrayList<>();
 
     public Sale() {
+    }
+
+    public void addMedicamentSold(MedicamentSold medicamentSold) {
+        this.medicamentsSold.add(medicamentSold);
+        medicamentSold.setSale(this);
     }
 
     public void setMedicamentsSold(List<MedicamentSold> medicamentsSold) {
@@ -56,5 +61,10 @@ public class Sale {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Sale{id=" + id + ", total=" + total + ", saleDate=" + saleDate + "}";
     }
 }

@@ -30,10 +30,8 @@ public class MedicamentUsecase {
         return mapToDTO(medicament);
     }
 
-    public List<MedicamentResponseDTO> findAll(){
-        return medicamentRepository.findAll().stream()
-                .map(this::mapToDTO)
-                .toList();
+    public List<Medicament> findAll(){
+        return medicamentRepository.findAll();
     }
 
     public MedicamentResponseDTO searchMedicament(Long id){

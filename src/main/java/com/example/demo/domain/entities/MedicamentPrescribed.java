@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Entity
 @Table (name = "medicament_prescribed")
-@JsonIdentityInfo(scope = MedicamentPrescribed.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
+//@JsonIdentityInfo(scope = MedicamentPrescribed.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class MedicamentPrescribed {
 
     @Id
