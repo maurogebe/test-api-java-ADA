@@ -28,8 +28,8 @@ public class MedicamentController {
     }
 
     @PostMapping
-    public ResponseEntity<MedicamentResponseDTO> createMedicament(@RequestBody MedicamentRequestDTO medicamentRequestDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(medicamentUsecase.createMedicament(medicamentRequestDTO));
+    public ResponseEntity<Medicament> createMedicament(@RequestBody Medicament medicament){
+        return ResponseEntity.status(HttpStatus.CREATED).body(medicamentUsecase.createMedicament(medicament));
     }
 
     @GetMapping
@@ -38,7 +38,7 @@ public class MedicamentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicamentResponseDTO> getMedicament(@PathVariable("id") Long id){
+    public ResponseEntity<Medicament> getMedicament(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.searchMedicament(id));
     }
 
