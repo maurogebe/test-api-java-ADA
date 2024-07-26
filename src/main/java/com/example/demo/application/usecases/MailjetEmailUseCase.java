@@ -13,6 +13,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class MailjetEmailUseCase {
 
@@ -24,16 +27,21 @@ public class MailjetEmailUseCase {
     @Value("${mailjet.api.secret}")
     private String apiSecret;
 
-    public void sendEmail(String to, String subject, String body) throws MailjetException {
+    public void sendEmail(List<String> emailsTo, String subject, String body) throws MailjetException {
         ClientOptions options = ClientOptions.builder()
                 .apiKey(apiKey)
                 .apiSecretKey(apiSecret)
                 .build();
         MailjetClient client = new MailjetClient(options);
 
+        List<SendContact> emails = new ArrayList<>();
+        for (String email : emailsTo) {
+            emails.add(new SendContact(email, "stanislav"));
+        }
+
         TransactionalEmail message1 = TransactionalEmail
                 .builder()
-                .to(new SendContact(to, "stanislav"))
+                .to(emails)
                 .from(new SendContact("maurogebe.96@gmail.com", "Mailjet integration test"))
                 .htmlPart(body)
                 .subject(subject)
