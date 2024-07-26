@@ -48,6 +48,17 @@ public class SaleUseCase {
 
         sale.setTotal(calculateTotalCost(sale.getMedicamentsSold()));
         this.isaleRepository.save(sale);
+
+        sale.getMedicamentsSold().forEach(medicamentSold -> {
+            Medicament medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
+            if (medicament != null){
+                int newStock = medicament.getStocks() - medicamentSold.getQuantity();
+
+                if (newStock < 0){
+                    throw new IllegalStateException("Stock insuficiente para el medicamento ID: " + medicament.getId());
+                }
+                medicament.setStocks(newStock);
+                medicamentRepository.save(medicament);}});
         return (sale);
     }
 
