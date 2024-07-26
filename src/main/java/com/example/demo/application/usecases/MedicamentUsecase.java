@@ -24,22 +24,19 @@ public class MedicamentUsecase {
         this.objectMapper = objectMapper;
     }
 
-    public MedicamentResponseDTO createMedicament(MedicamentRequestDTO medicamentRequestDTO){
-        Medicament medicament = mapToEntity(medicamentRequestDTO);
+    public Medicament createMedicament(Medicament medicament){
         this.medicamentRepository.save(medicament);
-        return mapToDTO(medicament);
+        return medicament;
     }
 
-    public List<MedicamentResponseDTO> findAll(){
-        return medicamentRepository.findAll().stream()
-                .map(this::mapToDTO)
-                .toList();
+    public List<Medicament> findAll(){
+        return medicamentRepository.findAll();
     }
 
-    public MedicamentResponseDTO searchMedicament(Long id){
+    public Medicament searchMedicament(Long id){
         Medicament medicament = medicamentRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("No se encontró medicamento con ID: " + id));
-        return mapToDTO(medicament);
+        return medicament;
     }
 
     public void deleteById(Long id){

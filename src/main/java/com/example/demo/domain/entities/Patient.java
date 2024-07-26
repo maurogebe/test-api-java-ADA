@@ -1,8 +1,12 @@
 package com.example.demo.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "patient")
+//@JsonIdentityInfo(scope = Patient.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Patient {
 
     @Id
