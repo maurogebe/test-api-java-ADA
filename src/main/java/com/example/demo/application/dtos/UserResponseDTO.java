@@ -1,4 +1,4 @@
-package com.example.demo.domain.dtos;
+package com.example.demo.application.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

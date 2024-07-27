@@ -1,4 +1,5 @@
 package com.example.demo.infrastructure.controllers;
+import com.example.demo.application.dtos.SaleWithMedicamentDTO;
 import com.example.demo.domain.repositories.ISaleRepository;
 import com.example.demo.application.usecases.GeneratePDFUsecase;
 import com.example.demo.application.usecases.SaleUseCase;
@@ -30,29 +31,30 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<Sale> createSale(@RequestBody Sale sale){
+    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale){
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.createSale(sale));
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> getAllSales(){
-        return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.getAllSales());
+    public ResponseEntity<List<SaleWithMedicamentDTO>> getSales(){
+        return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.getSales());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sale> viewSale(@PathVariable("id") Long id){
+    public ResponseEntity<SaleWithMedicamentDTO> viewSale(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.getSaleById(id));
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteByIdSale(@PathVariable("id")Long id){
+    public ResponseEntity<Void> deleteSaleById(@PathVariable("id") Long id){
         saleUseCase.getSaleById(id);
-        saleUseCase.deleteByIdSale(id);
+        saleUseCase.deleteSaleById(id);
         return ResponseEntity.noContent().build();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateSale(@PathVariable("id")Long id, @RequestBody Sale sale){
-        saleUseCase.updateSale(id, sale);
-        return ResponseEntity.ok("Updated successfully");
+    public ResponseEntity<SaleWithMedicamentDTO> updateSale(@PathVariable("id") Long id, @RequestBody SaleWithMedicamentDTO sale){
+        SaleWithMedicamentDTO saleUpdated = saleUseCase.updateSale(id, sale);
+        return ResponseEntity.ok(saleUpdated);
     }
 
     @GetMapping("/{id}/pdf")
@@ -69,24 +71,11 @@ public class SaleController {
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sale_" + id + ".pdf");
 
         return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentLength(pdf.length)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(resource);
-
-//            byte[] pdfContent = generatePDFUsecase.generatePDF(sale);
-//
-//            ByteArrayResource resource = new ByteArrayResource(pdfContent);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sale_" + id + ".pdf");
-//
-//            return ResponseEntity
-//                    .ok()
-//                    .headers(headers)
-//                    .contentLength(pdfContent.length)
-//                    .contentType(MediaType.APPLICATION_PDF)
-//                    .body(resource);
+            .ok()
+            .headers(headers)
+            .contentLength(pdf.length)
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(resource);
     }
 
 }

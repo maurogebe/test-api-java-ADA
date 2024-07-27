@@ -1,7 +1,5 @@
 package com.example.demo.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "prescription")
-//@JsonIdentityInfo(scope = Prescription.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Prescription {
 
     @Id
@@ -31,7 +28,7 @@ public class Prescription {
     private Patient patient;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
-    private List<MedicamentPrescribed> medicamentPrescribed;
+    private List<MedicamentPrescribed> medicamentPrescribeds;
 
     public Prescription() {
     }

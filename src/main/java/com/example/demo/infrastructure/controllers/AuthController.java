@@ -2,9 +2,9 @@ package com.example.demo.infrastructure.controllers;
 
 import com.example.demo.application.auth.TokenService;
 import com.example.demo.application.usecases.UserUseCase;
-import com.example.demo.domain.dtos.LoginRequestDTO;
-import com.example.demo.domain.dtos.LoginResponseDTO;
-import com.example.demo.domain.dtos.UserResponseDTO;
+import com.example.demo.application.dtos.LoginRequestDTO;
+import com.example.demo.application.dtos.LoginResponseDTO;
+import com.example.demo.application.dtos.UserResponseDTO;
 import com.example.demo.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -11,7 +11,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "allergy")
-//@JsonIdentityInfo(scope = Allergy.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Allergy {
 
     @Id
