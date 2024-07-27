@@ -1,10 +1,12 @@
 package com.example.demo.application.usecases;
 
 import com.example.demo.application.dtos.UserResponseDTO;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.UserMapper;
 import com.example.demo.domain.entities.User;
 import com.example.demo.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,7 @@ public class UserUseCase {
     public UserResponseDTO getUserById(Long id) throws Exception {
         Optional<User> userById = this.userRepository.findById(id);
 
-        if(userById.isEmpty()) throw new Exception("Error");
+        if(userById.isEmpty()) throw new ApiRequestException("No se encontró el usuario con ID: " + id, HttpStatus.NOT_FOUND);
 
         return UserMapper.INSTANCE.userToUserResponseDTO(userById.get());
     }

@@ -1,16 +1,9 @@
 package com.example.demo.application.usecases;
 
-import com.example.demo.domain.entities.MedicamentSold;
-import com.example.demo.domain.entities.Patient;
-import com.example.demo.domain.entities.Sale;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.List;
-import com.itextpdf.layout.element.ListItem;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.thymeleaf.TemplateEngine;
@@ -18,17 +11,14 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 @Service
-public class GeneratePDFUsecase {
+public class GeneratePDFUseCase {
 
     @Autowired
     private final TemplateEngine templateEngine;
 
-    public GeneratePDFUsecase(TemplateEngine templateEngine) {
+    public GeneratePDFUseCase(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
@@ -50,7 +40,7 @@ public class GeneratePDFUsecase {
             renderer.layout();
             renderer.createPDF(out);
         } catch (DocumentException e) {
-            throw new RuntimeException("Error while creating PDF", e);
+            throw new ApiRequestException("Error while creating PDF", HttpStatus.BAD_GATEWAY);
         }
         return out.toByteArray();
     }
