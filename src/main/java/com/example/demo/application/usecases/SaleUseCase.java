@@ -5,6 +5,8 @@ import com.example.demo.application.dtos.MedicamentSoldWithMedicamentDTO;
 import com.example.demo.application.dtos.SaleWithMedicamentDTO;
 import com.example.demo.application.mappers.MedicamentMapper;
 import com.example.demo.application.mappers.SaleMapper;
+import com.example.demo.domain.entities.Medicament;
+import com.example.demo.domain.entities.Patient;
 import com.example.demo.domain.entities.Sale;
 import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.ISaleRepository;
@@ -23,9 +25,13 @@ public class SaleUseCase {
 
     private ISaleRepository iSaleRepository;
     private MedicamentUseCase medicamentUseCase;
+    private MailjetEmailUseCase mailjetEmailUseCase;
+    private PatientUseCase patientUseCase;
 
     @Autowired
-    public SaleUseCase(ISaleRepository iSaleRepository, MedicamentUseCase medicamentUseCase) {
+    public SaleUseCase(PatientUseCase patientUseCase, MailjetEmailUseCase mailjetEmailUseCase1, ISaleRepository iSaleRepository, MedicamentUseCase medicamentUseCase) {
+        this.patientUseCase = patientUseCase;
+        this.mailjetEmailUseCase = mailjetEmailUseCase;
         this.iSaleRepository = iSaleRepository;
         this.medicamentUseCase = medicamentUseCase;
     }
@@ -54,10 +60,12 @@ public class SaleUseCase {
 
         this.iSaleRepository.save(saleSave);
 
+        int newStock = 0;
+
         sale.getMedicamentsSold().forEach(medicamentSold -> {
             MedicamentDTO medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
             if (medicament != null){
-                int newStock = medicament.getStock() - medicamentSold.getQuantity();
+                newStock = medicament.getStock() - medicamentSold.getQuantity();
 
                 if (newStock < 0){
                     throw new IllegalStateException("Stock insuficiente para el medicamento ID: " + medicament.getId());
@@ -66,7 +74,31 @@ public class SaleUseCase {
                 medicamentUseCase.updateMedicament(medicament.getId(), medicament);
             }
         });
-        return (sale);
+
+        sale.getMedicamentsSold().forEach(medicamentSoldWithMedicamentDTO -> {
+            MedicamentDTO medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
+            int stock = medicament.getStock();
+            if (stock <= 3) {
+                List<MedicamentDTO> lowStockMedicaments = sale.getMedicamentsSold().stream()
+                        .map(medicamentSoldWithMedicamentDTO -> medicamentMap.get(medicamentSoldWithMedicamentDTO.getMedicament().getId()))
+                        .filter(medicament -> medicament.getStock() <= 3)
+                        .collect(Collectors.toList());
+                if (lowStockMedicaments.size() > 1) {
+                    sendStockAlertEmail(lowStockMedicaments);
+                }
+
+                public String sendStockAlertEmail(List<MedicamentDTO> lowStockMedicaments) {
+                    sendStockAlertEmail message = new sendStockAlerEmail();
+
+                public List<String> getAllPatientEmails() {
+                    List<Patient> patients = patientRepository.findAll(); // Método para obtener todos los pacientes
+                    return patients.stream()
+                            .map(Patient::getEmail)
+                            .collect(Collectors.toList());
+                }
+                    mailjetEmailUseCase.sendEmail();
+        }
+            }     return (sale);
     }
 
     public List<SaleWithMedicamentDTO> getSales(){

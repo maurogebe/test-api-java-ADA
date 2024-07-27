@@ -1,5 +1,8 @@
 package com.example.demo.application.usecases;
 
+import com.example.demo.domain.entities.Patient;
+import com.example.demo.domain.repositories.PatientRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
@@ -11,10 +14,15 @@ import com.mailjet.client.transactional.response.SendEmailsResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class MailjetEmailUseCase {
@@ -58,4 +66,7 @@ public class MailjetEmailUseCase {
 
         request.sendWith(client);
     }
+
+    private Patient patient;
+
 }
