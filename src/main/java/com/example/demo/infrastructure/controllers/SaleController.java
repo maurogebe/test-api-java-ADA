@@ -4,6 +4,7 @@ import com.example.demo.domain.repositories.ISaleRepository;
 import com.example.demo.application.usecases.GeneratePDFUsecase;
 import com.example.demo.application.usecases.SaleUseCase;
 import com.example.demo.domain.entities.Sale;
+import com.mailjet.client.errors.MailjetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +32,7 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale){
+    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale) throws MailjetException {
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.createSale(sale));
     }
 
