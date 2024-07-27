@@ -1,11 +1,12 @@
 package com.example.demo.application.usecases;
 
 import com.example.demo.application.dtos.PatientDTO;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.PatientMapper;
 import com.example.demo.domain.entities.Patient;
-import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class PatientUseCase {
 
     public PatientDTO getPatientById(Long id) {
         Optional<Patient> patient = patientRepository.findById(id);
-        if(patient.isEmpty()) new NotFoundException("No se encontró paciente con ID: " + id);
+        if(patient.isEmpty()) throw new ApiRequestException("No se encontró paciente con ID: " + id, HttpStatus.NOT_FOUND);
         return PatientMapper.INSTANCE.patientToPatientDTO(patient.get());
     }
 

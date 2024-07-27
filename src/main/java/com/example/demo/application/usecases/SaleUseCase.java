@@ -3,13 +3,13 @@ package com.example.demo.application.usecases;
 import com.example.demo.application.dtos.MedicamentDTO;
 import com.example.demo.application.dtos.MedicamentSoldWithMedicamentDTO;
 import com.example.demo.application.dtos.SaleWithMedicamentDTO;
-import com.example.demo.application.mappers.MedicamentMapper;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.SaleMapper;
 import com.example.demo.domain.entities.Sale;
-import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.ISaleRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,7 +76,7 @@ public class SaleUseCase {
 
     public SaleWithMedicamentDTO getSaleById(Long id) {
         Optional<Sale> sale = iSaleRepository.findById(id);
-        if(sale.isEmpty()) new NotFoundException("No se encontró la venta con ID: " + id);
+        if(sale.isEmpty()) throw new ApiRequestException("No se encontró la venta con ID: " + id, HttpStatus.NOT_FOUND);
         return SaleMapper.INSTANCE.saleToSaleWithMedicamentDTO(sale.get());
     }
 
