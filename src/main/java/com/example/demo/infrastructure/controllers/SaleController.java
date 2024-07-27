@@ -1,7 +1,7 @@
 package com.example.demo.infrastructure.controllers;
 import com.example.demo.application.dtos.SaleWithMedicamentDTO;
 import com.example.demo.domain.repositories.ISaleRepository;
-import com.example.demo.application.usecases.GeneratePDFUsecase;
+import com.example.demo.application.usecases.GeneratePDFUseCase;
 import com.example.demo.application.usecases.SaleUseCase;
 import com.example.demo.domain.entities.Sale;
 import com.mailjet.client.errors.MailjetException;
@@ -21,11 +21,11 @@ import java.util.List;
 public class SaleController {
 
     private final SaleUseCase saleUseCase;
-    private final GeneratePDFUsecase generatePDFUsecase;
+    private final GeneratePDFUseCase generatePDFUsecase;
     private final ISaleRepository iSaleRepository;
 
     @Autowired
-    public SaleController(SaleUseCase saleUseCase, GeneratePDFUsecase generatePDFUsecase, ISaleRepository iSaleRepository) {
+    public SaleController(SaleUseCase saleUseCase, GeneratePDFUseCase generatePDFUsecase, ISaleRepository iSaleRepository) {
         this.saleUseCase = saleUseCase;
         this.generatePDFUsecase = generatePDFUsecase;
         this.iSaleRepository = iSaleRepository;
