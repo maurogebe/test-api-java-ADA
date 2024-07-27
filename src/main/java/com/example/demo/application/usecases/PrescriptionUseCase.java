@@ -1,13 +1,13 @@
 package com.example.demo.application.usecases;
 
 import com.example.demo.application.dtos.PrescriptionWithMedicamentDTO;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.PrescriptionMapper;
 import com.example.demo.domain.entities.Prescription;
-import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.IPrescription;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class PrescriptionUseCase {
 
     public PrescriptionWithMedicamentDTO getPrescriptionById (Long id){
         Optional<Prescription> prescription = iprescription.findById(id);
-        if(prescription.isEmpty()) new NotFoundException("No se encontró la prescripcion con ID: " + id);
+        if(prescription.isEmpty()) throw new ApiRequestException("No se encontró la prescripción con ID: " + id, HttpStatus.NOT_FOUND);
         return PrescriptionMapper.INSTANCE.prescriptionToPrescriptionWithMedicamentDTO(prescription.get());
     }
 

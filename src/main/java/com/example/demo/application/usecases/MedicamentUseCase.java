@@ -1,11 +1,12 @@
 package com.example.demo.application.usecases;
 
 import com.example.demo.application.dtos.MedicamentDTO;
+import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.MedicamentMapper;
 import com.example.demo.domain.entities.Medicament;
-import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.MedicamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class MedicamentUseCase {
 
     public MedicamentDTO getMedicamentById(Long id){
         Optional<Medicament> medicament = medicamentRepository.findById(id);
-        if(medicament.isEmpty()) new NotFoundException("No se encontró medicamento con ID: " + id);
+        if(medicament.isEmpty()) throw new ApiRequestException("No se encontró medicamento con ID: " + id, HttpStatus.NOT_FOUND);
         return MedicamentMapper.INSTANCE.medicamentToMedicamentDTO(medicament.get());
     }
 
