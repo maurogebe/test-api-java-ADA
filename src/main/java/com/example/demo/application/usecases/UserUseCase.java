@@ -1,8 +1,8 @@
 package com.example.demo.application.usecases;
 
-import com.example.demo.domain.dtos.UserResponseDTO;
+import com.example.demo.application.dtos.UserResponseDTO;
+import com.example.demo.application.mappers.UserMapper;
 import com.example.demo.domain.entities.User;
-import com.example.demo.domain.mappers.UserMapper;
 import com.example.demo.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,23 +17,18 @@ public class UserUseCase {
 
     private PasswordEncoder encoder;
 
-    private UserMapper userMapper;
-
     @Autowired
-    public UserUseCase(UserRepository userRepository, PasswordEncoder encoder, UserMapper userMapper) {
+    public UserUseCase(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.encoder = encoder;
-        this.userMapper = userMapper;
     }
 
     public UserResponseDTO getUserById(Long id) throws Exception {
-        Optional<UserResponseDTO> userById = this.userRepository
-            .findById(id)
-            .map(userMapper::toUserResponseDTO);
+        Optional<User> userById = this.userRepository.findById(id);
 
         if(userById.isEmpty()) throw new Exception("Error");
 
-        return userById.get();
+        return UserMapper.INSTANCE.userToUserResponseDTO(userById.get());
     }
 
     public void createUser(User user) {

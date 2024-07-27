@@ -1,57 +1,61 @@
 package com.example.demo.application.usecases;
 
-import com.example.demo.domain.entities.Medicament;
-import com.example.demo.domain.entities.MedicamentSold;
+import com.example.demo.application.dtos.MedicamentDTO;
+import com.example.demo.application.dtos.MedicamentSoldWithMedicamentDTO;
+import com.example.demo.application.dtos.SaleWithMedicamentDTO;
+import com.example.demo.application.mappers.MedicamentMapper;
+import com.example.demo.application.mappers.SaleMapper;
 import com.example.demo.domain.entities.Sale;
+import com.example.demo.domain.exeptions.NotFoundException;
 import com.example.demo.domain.repositories.ISaleRepository;
-import com.example.demo.domain.repositories.MedicamentRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
 @Service
 public class SaleUseCase {
 
-    private final ObjectMapper objectMapper;
-    private ISaleRepository isaleRepository;
-    private MedicamentRepository medicamentRepository;
+    private ISaleRepository iSaleRepository;
+    private MedicamentUseCase medicamentUseCase;
 
     @Autowired
-    public SaleUseCase(ISaleRepository isaleRepository, MedicamentRepository medicamentRepository, ObjectMapper objectMapper) {
-        this.isaleRepository = isaleRepository;
-        this.medicamentRepository = medicamentRepository;
-        this.objectMapper = objectMapper;
+    public SaleUseCase(ISaleRepository iSaleRepository, MedicamentUseCase medicamentUseCase) {
+        this.iSaleRepository = iSaleRepository;
+        this.medicamentUseCase = medicamentUseCase;
     }
 
-    public Sale createSale(Sale sale){
+    public SaleWithMedicamentDTO createSale(SaleWithMedicamentDTO sale){
         List<Long> ids = sale.getMedicamentsSold().stream()
-            .map(MedicamentSold::getMedicament)
-            .map(Medicament::getId)
+            .map(MedicamentSoldWithMedicamentDTO::getMedicament)
+            .map(MedicamentDTO::getId)
             .toList();
-        List<Medicament> medicaments = medicamentRepository.findAllById(ids);
+        List<MedicamentDTO> medicaments = medicamentUseCase.getMedicamentsById(ids);
 
-        Map<Long, Medicament> medicamentMap = medicaments.stream()
-            .collect(Collectors.toMap(Medicament::getId, medicament -> medicament));
+        Map<Long, MedicamentDTO> medicamentMap = medicaments.stream()
+            .collect(Collectors.toMap(MedicamentDTO::getId, medicament -> medicament));
 
         sale.getMedicamentsSold().forEach(medicamentSold -> {
-            Medicament medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
+            MedicamentDTO medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
             if (medicament != null) {
                 medicamentSold.setMedicament(medicament);
             }
-            medicamentSold.setSale(sale);
         });
-
         sale.setTotal(calculateTotalCost(sale.getMedicamentsSold()));
-        this.isaleRepository.save(sale);
+
+        Sale saleSave = SaleMapper.INSTANCE.saleWithMedicamentDTOToSale(sale);
+
+        saleSave.getMedicamentsSold().forEach(medicamentSold -> medicamentSold.setSale(saleSave));
+
+        this.iSaleRepository.save(saleSave);
 
         sale.getMedicamentsSold().forEach(medicamentSold -> {
-            Medicament medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
+            MedicamentDTO medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
             if (medicament != null){
                 int newStock = medicament.getStock() - medicamentSold.getQuantity();
 
@@ -59,41 +63,46 @@ public class SaleUseCase {
                     throw new IllegalStateException("Stock insuficiente para el medicamento ID: " + medicament.getId());
                 }
                 medicament.setStock(newStock);
-                medicamentRepository.save(medicament);}});
+                medicamentUseCase.updateMedicament(medicament.getId(), medicament);
+            }
+        });
         return (sale);
     }
 
-    public List<Sale> getAllSales(){
-       return isaleRepository.findAll();
+    public List<SaleWithMedicamentDTO> getSales(){
+        List<Sale> saleList = iSaleRepository.findAll();
+        return SaleMapper.INSTANCE.saleListTosaleWithMedicamentDTOList(saleList);
     }
 
-    public void deleteByIdSale(Long id) {
+    public SaleWithMedicamentDTO getSaleById(Long id) {
+        Optional<Sale> sale = iSaleRepository.findById(id);
+        if(sale.isEmpty()) new NotFoundException("No se encontró la venta con ID: " + id);
+        return SaleMapper.INSTANCE.saleToSaleWithMedicamentDTO(sale.get());
+    }
+
+    public void deleteSaleById(Long id) {
         getSaleById(id);
-        isaleRepository.findById(id);
-        isaleRepository.deleteById(id);
+        iSaleRepository.findById(id);
+        iSaleRepository.deleteById(id);
     }
 
-    public Sale getSaleById(Long id) {
-        Sale sale = isaleRepository.findById(id).get();
-        return (sale);
+    public SaleWithMedicamentDTO updateSale (Long id, SaleWithMedicamentDTO saleUpdate) {
+         SaleWithMedicamentDTO saleById = getSaleById(id);
+
+         saleById.setSaleDate(saleUpdate.getSaleDate());
+         saleById.setPatient(saleUpdate.getPatient());
+         saleById.setMedicamentsSold(saleUpdate.getMedicamentsSold());
+         saleById.setTotal(calculateTotalCost(saleUpdate.getMedicamentsSold()));
+
+         Sale saleUpdated = iSaleRepository.save(SaleMapper.INSTANCE.saleWithMedicamentDTOToSale(saleById));
+
+         return SaleMapper.INSTANCE.saleToSaleWithMedicamentDTO(saleUpdated);
     }
 
-    public void updateSale (Long id, Sale sale) {
-             Sale saleUpdate = isaleRepository.findById(id).get();
-             saleUpdate.setId(sale.getId());
-             saleUpdate.setSaleDate(sale.getSaleDate());
-             saleUpdate.setPatient(sale.getPatient());
-             saleUpdate.setMedicamentsSold(sale.getMedicamentsSold());
-             saleUpdate.setTotal(calculateTotalCost(saleUpdate.getMedicamentsSold()));
-             isaleRepository.save(saleUpdate);
-
-    }
-
-    // Método para calcular el costo total de los medicamentos vendidos
-    private double calculateTotalCost(List<MedicamentSold> medicamentsSold) {
+    private double calculateTotalCost(List<MedicamentSoldWithMedicamentDTO> medicamentsSold) {
         double totalCost = 0.0;
-        for (MedicamentSold medicamentSold : medicamentsSold) {
-            Medicament medicament = medicamentSold.getMedicament();
+        for (MedicamentSoldWithMedicamentDTO medicamentSold : medicamentsSold) {
+            MedicamentDTO medicament = medicamentSold.getMedicament();
             totalCost += medicament.getCost() * medicamentSold.getQuantity();
         }
         return totalCost;

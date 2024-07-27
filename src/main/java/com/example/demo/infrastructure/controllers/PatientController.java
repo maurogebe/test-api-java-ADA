@@ -1,9 +1,7 @@
 package com.example.demo.infrastructure.controllers;
 
-import com.example.demo.application.usecases.PatientUsecase;
-import com.example.demo.domain.dtos.PatientRequestDTO;
-import com.example.demo.domain.dtos.PatientResponseDTO;
-import com.example.demo.domain.dtos.PatientUpdateRequestDTO;
+import com.example.demo.application.usecases.PatientUseCase;
+import com.example.demo.application.dtos.PatientDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,36 +13,36 @@ import java.util.List;
 @RequestMapping("/patient")
 public class PatientController {
 
-    private final PatientUsecase patientUsecase;
+    private final PatientUseCase patientUsecase;
 
     @Autowired
-    public PatientController(PatientUsecase patientUsecase){
+    public PatientController(PatientUseCase patientUsecase){
         this.patientUsecase = patientUsecase;
     }
 
     @PostMapping
-    public ResponseEntity<PatientResponseDTO> createPatient(@RequestBody PatientRequestDTO patientRequestDTO){
+    public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(patientUsecase.createPatient(patientRequestDTO));
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponseDTO>> getAllPatients(){
-        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.findAll());
+    public ResponseEntity<List<PatientDTO>> getPatients(){
+        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.getPatients());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> searchPatient(@PathVariable("id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.searchPatient(id));
+    public ResponseEntity<PatientDTO> getPatientById(@PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.getPatientById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> updatePatient(@RequestBody PatientUpdateRequestDTO patientUpdateRequestDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.updatePatient(patientUpdateRequestDTO));
+    public ResponseEntity<PatientDTO> updatePatient(@PathVariable("id") Long id, @RequestBody PatientDTO patientDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(patientUsecase.updatePatient(id, patientDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatient(@PathVariable("id") Long id) {
-        patientUsecase.searchPatient(id);
+        patientUsecase.getPatientById(id);
         patientUsecase.deleteById(id);
         return ResponseEntity.noContent().build();
     }

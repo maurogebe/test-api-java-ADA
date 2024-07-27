@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -12,30 +13,29 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicament")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Medicament {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column (name = "id")
+    @Column(name = "id")
     private long id;
 
-    @Column (name = "name")
+    @Column(name = "name")
     private String name;
 
-    @Column (name = "description")
+    @Column(name = "description")
     private String description;
 
-    @Column (name = "form")
+    @Column(name = "form")
     private String form;
 
-    @Column (name = "stock")
+    @Column(name = "stock")
     private int stock;
 
-    @Column (name = "cost")
-    private long cost;
+    @Column(name = "cost")
+    private double cost;
 
-    @Column (name = "prescriptionRequired")
+    @Column(name = "prescription_required")
     private boolean prescriptionRequired;
 
     @OneToMany(mappedBy = "medicament", cascade = CascadeType.ALL)

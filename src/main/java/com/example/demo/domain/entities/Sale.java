@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 @Entity
 @Table(name = "sale")
-//@JsonIdentityInfo(scope = Sale.class, generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Sale {
 
     @Id

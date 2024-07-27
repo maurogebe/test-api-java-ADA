@@ -1,6 +1,6 @@
 package com.example.demo.domain.exeptions;
 
-import com.example.demo.domain.dtos.ExceptionDTO;
+import com.example.demo.application.dtos.ExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
