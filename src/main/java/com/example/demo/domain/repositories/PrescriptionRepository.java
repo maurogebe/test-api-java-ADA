@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPrescription extends JpaRepository<Prescription, Long> {
+public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
 }

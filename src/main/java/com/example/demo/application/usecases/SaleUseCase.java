@@ -6,7 +6,7 @@ import com.example.demo.application.dtos.SaleWithMedicamentDTO;
 import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.SaleMapper;
 import com.example.demo.domain.entities.Sale;
-import com.example.demo.domain.repositories.ISaleRepository;
+import com.example.demo.domain.repositories.SaleRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class SaleUseCase {
 
-    private ISaleRepository iSaleRepository;
+    private SaleRepository saleRepository;
     private MedicamentUseCase medicamentUseCase;
 
     @Autowired
-    public SaleUseCase(ISaleRepository iSaleRepository, MedicamentUseCase medicamentUseCase) {
-        this.iSaleRepository = iSaleRepository;
+    public SaleUseCase(SaleRepository saleRepository, MedicamentUseCase medicamentUseCase) {
+        this.saleRepository = saleRepository;
         this.medicamentUseCase = medicamentUseCase;
     }
 
@@ -52,7 +52,7 @@ public class SaleUseCase {
 
         saleSave.getMedicamentsSold().forEach(medicamentSold -> medicamentSold.setSale(saleSave));
 
-        this.iSaleRepository.save(saleSave);
+        this.saleRepository.save(saleSave);
 
         sale.getMedicamentsSold().forEach(medicamentSold -> {
             MedicamentDTO medicament = medicamentMap.get(medicamentSold.getMedicament().getId());
@@ -70,20 +70,20 @@ public class SaleUseCase {
     }
 
     public List<SaleWithMedicamentDTO> getSales(){
-        List<Sale> saleList = iSaleRepository.findAll();
+        List<Sale> saleList = saleRepository.findAll();
         return SaleMapper.INSTANCE.saleListTosaleWithMedicamentDTOList(saleList);
     }
 
     public SaleWithMedicamentDTO getSaleById(Long id) {
-        Optional<Sale> sale = iSaleRepository.findById(id);
+        Optional<Sale> sale = saleRepository.findById(id);
         if(sale.isEmpty()) throw new ApiRequestException("No se encontró la venta con ID: " + id, HttpStatus.NOT_FOUND);
         return SaleMapper.INSTANCE.saleToSaleWithMedicamentDTO(sale.get());
     }
 
     public void deleteSaleById(Long id) {
         getSaleById(id);
-        iSaleRepository.findById(id);
-        iSaleRepository.deleteById(id);
+        saleRepository.findById(id);
+        saleRepository.deleteById(id);
     }
 
     public SaleWithMedicamentDTO updateSale (Long id, SaleWithMedicamentDTO saleUpdate) {
@@ -94,7 +94,7 @@ public class SaleUseCase {
          saleById.setMedicamentsSold(saleUpdate.getMedicamentsSold());
          saleById.setTotal(calculateTotalCost(saleUpdate.getMedicamentsSold()));
 
-         Sale saleUpdated = iSaleRepository.save(SaleMapper.INSTANCE.saleWithMedicamentDTOToSale(saleById));
+         Sale saleUpdated = saleRepository.save(SaleMapper.INSTANCE.saleWithMedicamentDTOToSale(saleById));
 
          return SaleMapper.INSTANCE.saleToSaleWithMedicamentDTO(saleUpdated);
     }
