@@ -23,10 +23,10 @@ public class MailjetEmailUseCase {
 
 //    private final MailjetClient client;
 
-    @Value("${mailjet.api.key}")
+    @Value("apiKey=f91f0e5115385154a09953eda975e7b5")
     private String apiKey;
 
-    @Value("${mailjet.api.secret}")
+    @Value("secretKey=d203320675dc7b3847c4f476fbfd1dc6")
     private String apiSecret;
 
     public void sendEmail(List<String> emailsTo, String subject, String body) throws MailjetException {
@@ -49,7 +49,7 @@ public class MailjetEmailUseCase {
                     .htmlPart(body)
                     .subject(subject)
                     .trackOpens(TrackOpens.ENABLED)
-//                .attachment(Attachment.fromFile(attachmentPath))
+//                  .attachment(Attachment.fromFile(attachmentPath))
                     .header("test-header-key", "test-value")
                     .customID("custom-id-value")
                     .build();
