@@ -1,6 +1,6 @@
 package com.example.demo.infrastructure.controllers;
 import com.example.demo.application.dtos.SaleWithMedicamentDTO;
-import com.example.demo.domain.repositories.ISaleRepository;
+import com.example.demo.domain.repositories.SaleRepository;
 import com.example.demo.application.usecases.GeneratePDFUseCase;
 import com.example.demo.application.usecases.SaleUseCase;
 import com.example.demo.domain.entities.Sale;
@@ -26,13 +26,13 @@ public class SaleController {
 
     private final SaleUseCase saleUseCase;
     private final GeneratePDFUseCase generatePDFUsecase;
-    private final ISaleRepository iSaleRepository;
+    private final SaleRepository saleRepository;
 
     @Autowired
-    public SaleController(SaleUseCase saleUseCase, GeneratePDFUseCase generatePDFUsecase, ISaleRepository iSaleRepository) {
+    public SaleController(SaleUseCase saleUseCase, GeneratePDFUseCase generatePDFUsecase, SaleRepository saleRepository) {
         this.saleUseCase = saleUseCase;
         this.generatePDFUsecase = generatePDFUsecase;
-        this.iSaleRepository = iSaleRepository;
+        this.saleRepository = saleRepository;
     }
 
     @Operation(summary = "Crear una nueva venta", description = "Crea una nueva venta con los datos proporcionados")
@@ -101,7 +101,7 @@ public class SaleController {
     })
     @GetMapping("/{id}/pdf")
     public ResponseEntity<ByteArrayResource> getPdf(@PathVariable("id") Long id){
-        Sale sale = iSaleRepository.findById(id).orElseThrow(() -> new RuntimeException("Sale not found"));
+        Sale sale = saleRepository.findById(id).orElseThrow(() -> new RuntimeException("Sale not found"));
 
         ModelMap model = new ModelMap();
 
