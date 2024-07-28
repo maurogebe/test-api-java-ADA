@@ -49,7 +49,7 @@ public class MailjetEmailUseCase {
                     .htmlPart(body)
                     .subject(subject)
                     .trackOpens(TrackOpens.ENABLED)
-//                .attachment(Attachment.fromFile(attachmentPath))
+//                  .attachment(Attachment.fromFile(attachmentPath))
                     .header("test-header-key", "test-value")
                     .customID("custom-id-value")
                     .build();
