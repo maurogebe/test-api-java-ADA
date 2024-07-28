@@ -42,6 +42,8 @@ public class SecurityConfig {
     private AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizeUrlsNew(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry urlRegistry) {
         urlRegistry
             .requestMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
+                // *** Permitir acceso sin autenticación a Swagger ***
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .anyRequest().authenticated();
         return urlRegistry;
     }
