@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.mailjet.client.errors.MailjetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +43,7 @@ public class SaleController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale){
+    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale) throws MailjetException {
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.createSale(sale));
     }
 
