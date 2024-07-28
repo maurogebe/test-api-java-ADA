@@ -57,6 +57,7 @@ dependencies {
 	//Orc
 	implementation "net.sourceforge.tess4j:tess4j:4.5.1"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.apache.pdfbox:pdfbox:2.0.28'
 
 }
 
