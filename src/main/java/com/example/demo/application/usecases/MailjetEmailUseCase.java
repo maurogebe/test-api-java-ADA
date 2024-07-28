@@ -23,10 +23,10 @@ public class MailjetEmailUseCase {
 
 //    private final MailjetClient client;
 
-    @Value("apiKey=f91f0e5115385154a09953eda975e7b5")
+    @Value("${mailjet.api.key}")
     private String apiKey;
 
-    @Value("secretKey=d203320675dc7b3847c4f476fbfd1dc6")
+    @Value("${mailjet.api.secret}")
     private String apiSecret;
 
     public void sendEmail(List<String> emailsTo, String subject, String body) throws MailjetException {
