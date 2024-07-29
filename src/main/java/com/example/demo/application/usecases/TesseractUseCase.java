@@ -1,6 +1,7 @@
 package com.example.demo.application.usecases;
 
 import com.example.demo.application.dtos.MedicamentFromFileWithOCRDTO;
+import com.example.demo.application.exeptions.ApiRequestException;
 import lombok.Data;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -8,6 +9,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -66,6 +68,9 @@ public class TesseractUseCase {
 
             String res = extractedText.toString();
             return parseTextToMedications(res);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ApiRequestException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
