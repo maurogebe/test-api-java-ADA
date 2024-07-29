@@ -2,7 +2,6 @@ package com.example.demo.infrastructure.controllers;
 
 import com.example.demo.application.dtos.PrescriptionWithMedicamentDTO;
 import com.example.demo.application.usecases.PrescriptionUseCase;
-import com.example.demo.domain.entities.Prescription;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Prescripciones", description = "Operaciones relacionadas con las prescripciones médicas")
 @RestController
@@ -70,6 +68,17 @@ public class PrescriptionController {
     public ResponseEntity<Void> deletePrescriptionById(@PathVariable("id") Long id){
         prescriptionUseCase.deletePrescriptionById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Leer PDF o imagen con OCR", description = "Leer PDF o imagen con tecnicas OCR y obtener la prescripcion y guardarla")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Prescripción obtenida exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @PostMapping("/ocr")
+    public ResponseEntity<PrescriptionWithMedicamentDTO> getPrescriptionWithFile(@RequestParam("file") MultipartFile file) throws Exception {
+        return ResponseEntity.ok(prescriptionUseCase.getPrescriptionWithFile(file));
     }
 
 }

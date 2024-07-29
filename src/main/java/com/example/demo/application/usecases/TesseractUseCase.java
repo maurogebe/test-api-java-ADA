@@ -1,5 +1,6 @@
 package com.example.demo.application.usecases;
 
+import com.example.demo.application.dtos.MedicamentFromFileWithOCRDTO;
 import lombok.Data;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -9,29 +10,46 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Data
 @Service
 public class TesseractUseCase {
 
-    @Autowired
     private Tesseract tesseract;
+    private MedicamentUseCase medicamentUseCase;
 
-    public String recognizedText(InputStream inputStream) throws IOException {
+    @Autowired
+    public TesseractUseCase(Tesseract tesseract, MedicamentUseCase medicamentUseCase) {
+        this.tesseract = tesseract;
+        this.medicamentUseCase = medicamentUseCase;
+    }
+
+    public List<MedicamentFromFileWithOCRDTO> recognizedText(InputStream inputStream) throws Exception {
 
         BufferedImage image = ImageIO.read(inputStream);
+        BufferedImage preprocessedImage = preprocessImage(image);
+        BufferedImage adjustImage = adjustContrast(preprocessedImage);
+        BufferedImage binarizedImage = binarizeImage(adjustImage);
         try {
-
-            return tesseract.doOCR(image);
+            String res = tesseract.doOCR(binarizedImage);
+            return parseTextToMedications(res);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new Exception(e);
         }
-        return "Failder";
     }
-    public String extractTextFromPdf(File pdfFile) throws IOException, TesseractException {
+
+    public List<MedicamentFromFileWithOCRDTO>  extractTextFromPdf(File pdfFile) throws IOException, TesseractException {
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
             StringBuilder extractedText = new StringBuilder();
@@ -43,12 +61,94 @@ public class TesseractUseCase {
 
                 String result = tesseract.doOCR(tempImageFile);
                 extractedText.append(result);
-                tempImageFile.delete(); // Eliminar archivo temporal después de usar
+                tempImageFile.delete();
             }
 
-            return extractedText.toString();
+            String res = extractedText.toString();
+            return parseTextToMedications(res);
         }
     }
 
+    private BufferedImage preprocessImage(BufferedImage image) {
+        BufferedImage grayImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        Graphics g = grayImage.getGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+        return grayImage;
+    }
+
+    private BufferedImage adjustContrast(BufferedImage image) {
+        RescaleOp op = new RescaleOp(1.5f, 0, null); // 1.5f es el factor de contraste, ajusta según sea necesario
+        return op.filter(image, null);
+    }
+
+    private BufferedImage binarizeImage(BufferedImage image) {
+        BufferedImage binarizedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
+        Graphics g = binarizedImage.getGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+        return binarizedImage;
+    }
+
+    private List<MedicamentFromFileWithOCRDTO> parseTextToMedications(String text) {
+        List<MedicamentFromFileWithOCRDTO> medicaments = new ArrayList<>();
+
+        Pattern treatmentPattern = Pattern.compile("TRATAMIENTO\\s*(.*?)\\s*Otras indicaciones", Pattern.DOTALL);
+        Matcher matcher = treatmentPattern.matcher(text);
+
+        if (matcher.find()) {
+            String treatmentSection = matcher.group(1).trim();
+
+            String[] lines = treatmentSection.split("\\n");
+            for (int i = 0; i < lines.length; i += 2) {
+                if (i + 1 < lines.length) {
+                    String name = lines[i].trim();
+                    String secondLine = lines[i + 1].trim();
+
+                    String[] parts = secondLine.split("\\.\\s*");
+                    String dose = parts.length > 0 ? parts[0].trim() : "";
+                    String form = parts.length > 1 ? parts[1].trim() : "";
+                    String instructionsPart1 = parts.length > 2 ? parts[2].trim() : "";
+                    String instructionsPart2 = parts.length > 3 ? parts[3].trim() : "";
+                    String instructions = instructionsPart1 + ". " + instructionsPart2;
+
+                    medicaments.add(new MedicamentFromFileWithOCRDTO(name, extractFirstNumber(dose), form, instructions));
+                }
+            }
+        }
+
+        return medicaments;
+    }
+
+    private String extractPatientInfo(String text) {
+        return extractPattern(text, "Nombre:\\s*(.+)");
+    }
+
+    private String extractPattern(String text, String regex) {
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        }
+        return null;
+    }
+
+    private Integer extractFirstNumber(String text) {
+        String regex = "\\d+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+
+        if (matcher.find()) {
+            String numberStr = matcher.group();
+            try {
+                return Integer.parseInt(numberStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return null;
+    }
 }
 
