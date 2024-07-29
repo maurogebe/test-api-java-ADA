@@ -56,8 +56,9 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .userDetailsService(customUserDetailsService)
             .exceptionHandling(exceptions -> exceptions
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                    .accessDeniedPage("/error/403") // Custom access denied page
             );
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
