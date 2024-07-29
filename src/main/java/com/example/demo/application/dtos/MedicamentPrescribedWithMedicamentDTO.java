@@ -15,8 +15,14 @@ public class MedicamentPrescribedWithMedicamentDTO {
     private int quantity;
 
     @JsonProperty("instructions")
-    private int instructions;
+    private String instructions;
 
     @JsonProperty("medicament")
     private MedicamentDTO medicament;
+
+    public MedicamentPrescribedWithMedicamentDTO(int quantity, String instructions, MedicamentDTO medicament) {
+        this.quantity = quantity;
+        this.instructions = instructions;
+        this.medicament = medicament;
+    }
 }

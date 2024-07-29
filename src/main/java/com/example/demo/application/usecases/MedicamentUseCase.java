@@ -32,6 +32,21 @@ public class MedicamentUseCase {
         return MedicamentMapper.INSTANCE.medicamentListToMedicamentDTOList(medicamentList);
     }
 
+    public Optional<Medicament> getMedicamentByNamePartition(String name){
+        Optional<Medicament> medicament = medicamentRepository.findByName(name);
+        if(medicament.isEmpty()) {
+            String[] parts = name.split(" ");
+            for (String part : parts) {
+                Optional<Medicament> medicamentByName = medicamentRepository.findByName(part);
+                if(medicamentByName.isPresent()) {
+                    medicament = medicamentByName;
+                    break;
+                }
+            }
+        }
+        return medicament;
+    }
+
     public List<MedicamentDTO> getMedicamentsById(List<Long> ids){
         List<Medicament> medicamentList = medicamentRepository.findAllById(ids);
         return MedicamentMapper.INSTANCE.medicamentListToMedicamentDTOList(medicamentList);
