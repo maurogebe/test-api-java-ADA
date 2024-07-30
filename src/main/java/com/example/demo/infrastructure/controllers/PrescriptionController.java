@@ -78,7 +78,12 @@ public class PrescriptionController {
     })
     @PostMapping("/ocr")
     public ResponseEntity<PrescriptionWithMedicamentDTO> getPrescriptionWithFile(@RequestParam("file") MultipartFile file) throws Exception {
-        return ResponseEntity.ok(prescriptionUseCase.getPrescriptionWithFile(file));
+        try {
+            return ResponseEntity.ok(prescriptionUseCase.getPrescriptionWithFile(file));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception(e);
+        }
     }
 
 }
