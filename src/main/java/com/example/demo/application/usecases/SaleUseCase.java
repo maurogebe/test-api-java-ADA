@@ -123,6 +123,10 @@ public class SaleUseCase {
 
         List<MedicamentDTO> medicamentList = medicamentUseCase.getLowStockMedicaments();
 
+        List<MedicamentDTO> medicamentFiltered = medicamentList.stream()
+                .filter(med -> sale.getMedicamentsSold().stream().anyMatch(m -> m.getId() == med.getId()))
+                .toList();
+
         if(!medicamentList.isEmpty()) {
             List<PatientDTO> patientsDTO = patientUseCase.getPatients();
             List<String> emails = patientsDTO.stream()
