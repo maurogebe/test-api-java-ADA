@@ -45,8 +45,12 @@ public class MedicamentController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<List<MedicamentDTO>> getMedicaments(){
-        return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.getMedicaments());
+    public ResponseEntity<List<MedicamentDTO>> getMedicaments(@RequestParam(required = false) String name){
+        if (name != null && !name.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.getMedicamentsByNameContaining(name));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(medicamentUsecase.getMedicaments());
+        }
     }
 
     @Operation(summary = "Obtener un medicamento por ID", description = "Obtiene los detalles de un medicamento específico por ID")

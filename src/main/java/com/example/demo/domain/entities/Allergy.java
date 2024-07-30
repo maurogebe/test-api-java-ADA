@@ -24,7 +24,7 @@ public class Allergy {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "allergies")
+    @ManyToMany(mappedBy = "allergies", targetEntity = Patient.class)
     private Set<Patient> patients;
 
     public Allergy() {

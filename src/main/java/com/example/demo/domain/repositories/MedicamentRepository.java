@@ -14,4 +14,6 @@ public interface MedicamentRepository extends JpaRepository<Medicament, Long> {
     List<Medicament> findByStockLessThanEqual(int stock);
 
     Optional<Medicament> findByName(@Param("name") String name);
+
+    List<Medicament> findByNameContainingIgnoreCase(String name);
 }
