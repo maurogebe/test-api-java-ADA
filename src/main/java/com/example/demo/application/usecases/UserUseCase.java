@@ -3,12 +3,15 @@ package com.example.demo.application.usecases;
 import com.example.demo.application.dtos.UserResponseDTO;
 import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.UserMapper;
+import com.example.demo.domain.entities.Sale;
 import com.example.demo.domain.entities.User;
 import com.example.demo.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.Optional;
 

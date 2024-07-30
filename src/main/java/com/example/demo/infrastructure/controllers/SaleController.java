@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,10 @@ import java.util.List;
 public class SaleController {
 
     private final SaleUseCase saleUseCase;
-    private final GeneratePDFUseCase generatePDFUsecase;
-    private final SaleRepository saleRepository;
 
     @Autowired
-    public SaleController(SaleUseCase saleUseCase, GeneratePDFUseCase generatePDFUsecase, SaleRepository saleRepository) {
+    public SaleController(SaleUseCase saleUseCase) {
         this.saleUseCase = saleUseCase;
-        this.generatePDFUsecase = generatePDFUsecase;
-        this.saleRepository = saleRepository;
     }
 
     @Operation(summary = "Crear una nueva venta", description = "Crea una nueva venta con los datos proporcionados")
@@ -43,7 +40,7 @@ public class SaleController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale) throws MailjetException {
+    public ResponseEntity<SaleWithMedicamentDTO> createSale(@RequestBody SaleWithMedicamentDTO sale) throws MailjetException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(saleUseCase.createSale(sale));
     }
 
@@ -102,13 +99,8 @@ public class SaleController {
     })
     @GetMapping("/{id}/pdf")
     public ResponseEntity<ByteArrayResource> getPdf(@PathVariable("id") Long id){
-        Sale sale = saleRepository.findById(id).orElseThrow(() -> new RuntimeException("Sale not found"));
 
-        ModelMap model = new ModelMap();
-
-        model.addAttribute("sale", sale);
-        byte[] pdf = generatePDFUsecase.createPdf("saleDetails", model);
-
+        byte[] pdf = saleUseCase.generatePdf(id);
         ByteArrayResource resource = new ByteArrayResource(pdf);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sale_" + id + ".pdf");
