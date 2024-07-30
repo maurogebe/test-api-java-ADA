@@ -38,12 +38,19 @@ public class TesseractUseCase {
 
     public List<MedicamentFromFileWithOCRDTO> recognizedText(InputStream inputStream) throws Exception {
 
+        System.out.println("Primer");
         BufferedImage image = ImageIO.read(inputStream);
+        System.out.println("Segundo");
         BufferedImage preprocessedImage = preprocessImage(image);
+        System.out.println("Tercero");
         BufferedImage adjustImage = adjustContrast(preprocessedImage);
+        System.out.println("Cuarto");
         BufferedImage binarizedImage = binarizeImage(adjustImage);
         try {
+
+            System.out.println("Quinto");
             String res = tesseract.doOCR(binarizedImage);
+            System.out.println("Sexto");
             return parseTextToMedications(res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,20 +60,30 @@ public class TesseractUseCase {
 
     public List<MedicamentFromFileWithOCRDTO>  extractTextFromPdf(File pdfFile) throws IOException, TesseractException {
         try (PDDocument document = PDDocument.load(pdfFile)) {
+            System.out.println("Primer");
             PDFRenderer pdfRenderer = new PDFRenderer(document);
+            System.out.println("Segundo");
             StringBuilder extractedText = new StringBuilder();
+            System.out.println("Tercero");
 
+            System.out.println("Cuarto");
             for (int page = 0; page < document.getNumberOfPages(); page++) {
                 BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 File tempImageFile = File.createTempFile("pdf_page_" + page, ".png");
                 ImageIO.write(image, "png", tempImageFile);
 
+                System.out.println("Quinto");
+
                 String result = tesseract.doOCR(tempImageFile);
+                System.out.println("Sexto");
                 extractedText.append(result);
+                System.out.println("Septimo");
                 tempImageFile.delete();
             }
 
+            System.out.println("Octavo");
             String res = extractedText.toString();
+            System.out.println("Noveno");
             return parseTextToMedications(res);
         } catch (Exception e) {
             System.out.println(e.getMessage());
