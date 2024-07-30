@@ -32,6 +32,11 @@ public class MedicamentUseCase {
         return MedicamentMapper.INSTANCE.medicamentListToMedicamentDTOList(medicamentList);
     }
 
+    public List<MedicamentDTO> getMedicamentsByNameContaining(String name){
+        List<Medicament> medicamentList = medicamentRepository.findByNameContainingIgnoreCase(name);
+        return MedicamentMapper.INSTANCE.medicamentListToMedicamentDTOList(medicamentList);
+    }
+
     public List<MedicamentDTO> getLowStockMedicaments(){
         List<Medicament> medicamentList = medicamentRepository.findByStockLessThanEqual(3);
         return MedicamentMapper.INSTANCE.medicamentListToMedicamentDTOList(medicamentList);

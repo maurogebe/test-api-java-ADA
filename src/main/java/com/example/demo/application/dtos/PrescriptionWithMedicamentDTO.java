@@ -23,7 +23,7 @@ public class PrescriptionWithMedicamentDTO {
     @JsonProperty("patient")
     private PatientDTO patient;
 
-    @JsonProperty("medicamentsSold")
+    @JsonProperty("medicamentPrescribeds")
     private List<MedicamentPrescribedWithMedicamentDTO> medicamentPrescribeds;
 
     public void setIssueDate(LocalDate issueDate) {
