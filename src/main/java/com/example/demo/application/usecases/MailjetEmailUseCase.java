@@ -49,7 +49,42 @@ public class MailjetEmailUseCase {
                     .htmlPart(body)
                     .subject(subject)
                     .trackOpens(TrackOpens.ENABLED)
-//                  .attachment(Attachment.fromFile(attachmentPath))
+                    .header("test-header-key", "test-value")
+                    .customID("custom-id-value")
+                    .build();
+
+            SendEmailsRequest request = SendEmailsRequest
+                    .builder()
+                    .message(message1)
+                    .build();
+
+            request.sendWith(client);
+        } catch (RuntimeException e) {
+            throw new ApiRequestException("Error while creating PDF", HttpStatus.BAD_GATEWAY);
+        }
+    }
+
+    public void sendEmailWithAttachment(List<String> emailsTo, String subject, String body, Attachment attachment) throws MailjetException {
+        try {
+            ClientOptions options = ClientOptions.builder()
+                    .apiKey(apiKey)
+                    .apiSecretKey(apiSecret)
+                    .build();
+            MailjetClient client = new MailjetClient(options);
+
+            List<SendContact> emails = new ArrayList<>();
+            for (String email : emailsTo) {
+                emails.add(new SendContact(email, "stanislav"));
+            }
+
+            TransactionalEmail message1 = TransactionalEmail
+                    .builder()
+                    .to(emails)
+                    .from(new SendContact("maurogebe.96@gmail.com", "Mailjet integration test"))
+                    .htmlPart(body)
+                    .subject(subject)
+                    .trackOpens(TrackOpens.ENABLED)
+                    .attachment(attachment)
                     .header("test-header-key", "test-value")
                     .customID("custom-id-value")
                     .build();
