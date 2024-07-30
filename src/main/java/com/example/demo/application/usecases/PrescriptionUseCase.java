@@ -67,15 +67,23 @@ public class PrescriptionUseCase {
     }
 
     public PrescriptionWithMedicamentDTO getPrescriptionWithFile(MultipartFile file) throws Exception {
+        System.out.println("Segundo");
         if(Objects.requireNonNull(file.getOriginalFilename()).contains("pdf")) {
+            System.out.println("Tercero");
             File pdfFile = File.createTempFile("uploaded_pdf", ".pdf");
+            System.out.println("Cuarto");
             file.transferTo(pdfFile);
+            System.out.println("Quinto");
             List<MedicamentFromFileWithOCRDTO> medicaments = tesseractUseCase.extractTextFromPdf(pdfFile);
+            System.out.println("Sexto");
             pdfFile.delete();
+            System.out.println("Septimo");
 
             return getPrescriptionByTextFromFile(medicaments);
         } else {
+            System.out.println("Octavo");
             List<MedicamentFromFileWithOCRDTO> medicaments = tesseractUseCase.recognizedText(file.getInputStream());
+            System.out.println("Noveno");
             return getPrescriptionByTextFromFile(medicaments);
         }
     }
