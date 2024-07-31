@@ -1,4 +1,4 @@
-# #Proyecto integrador QuickPharma :rocket:
+## Proyecto integrador QuickPharma :rocket:
 
 QuickPharma es una aplicación diseñada para optimizar la gestión de recetas médicas, perfiles de pacientes, inventario de medicamentos y ventas. Esta aplicación busca ser altamente segura, escalable y fácil de usar tanto para empleados como para clientes.
 
@@ -16,7 +16,7 @@ La aplicación esta pensanda para actualizar los sistemas de las farmacias tradi
 
 **Spring Boot Starter Data JPA:** Para la integración con JPA para el manejo de datos. :file_cabinet:
 
-**Spring Boot Starter Web: **Para el desarrollo de aplicaciones web. :globe_with_meridians:
+**Spring Boot Starter Web:** Para el desarrollo de aplicaciones web. :globe_with_meridians:
 
 **Spring Boot Starter Security:** Para implementar seguridad en la aplicación. :closed_lock_with_key:
 
@@ -46,7 +46,7 @@ jjwt-api, jjwt-impl, jjwt-jackson: Bibliotecas para la generación y validación
 
 **Mapeo de Objetos:**
 
-**MapStruct: **Para la conversión entre objetos Java.
+**MapStruct:** Para la conversión entre objetos Java.
 **Reconocimiento Óptico de Caracteres (OCR)**: :mag:
 
 **Tess4J:** Biblioteca para implementar OCR usando Tesseract con IA. :robot:
@@ -61,7 +61,7 @@ jjwt-api, jjwt-impl, jjwt-jackson: Bibliotecas para la generación y validación
 
 **Spring Boot Starter Test y Spring Security Test:** Para pruebas en la aplicación. :test_tube:
 
-## ## Frontend
+## Frontend
 **React:** Biblioteca JavaScript para la construcción de interfaces de usuario. :atom_symbol:
 
 **Chakra UI:** Framework de componentes de interfaz de usuario para React, que proporciona estilos accesibles y consistentes. :art:
@@ -69,10 +69,11 @@ jjwt-api, jjwt-impl, jjwt-jackson: Bibliotecas para la generación y validación
 ## Diagramas usados para la elaboracion del proyecto
 ## Diagrama Entidad Relación
 
-<img src="https://drive.google.com/file/d/1xxeEBeUvBAE9BW8Gnkk6BcYmYca2vcbK/view>
-## Diagrama UMl
+<img src="./src/main/resources/images/Proyecto-integrador-DB.drawio.png" alt="Diagrama de la Base de Datos" />
 
-<img src="https://drive.google.com/file/d/19TTjK3O5-FhRvaJsrgiAw3eHejMZQnNi/view>
+## Diagrama UML
+
+<img src="./src/main/resources/images/QuickPharma-UML.drawio.png" alt="Diagrama UML"/>
 
 # Soluciones Propuestas: 💡 - :bulb:
 
@@ -137,29 +138,26 @@ mvn spring-boot:run
 
 ###  Despliegue Continuo
 
-esta aplicación está configurada para el despliegue continuo usando github actions. cada vez que se realiza un push al repositorio, el flujo de trabajo de github actions compila, prueba y despliega automáticamente la aplicación.
+Esta aplicación está configurada para el despliegue continuo usando github actions. cada vez que se realiza un push al repositorio, el flujo de trabajo de github actions compila, prueba y despliega automáticamente la aplicación.
 H2 Header (Underline)
 
+## Crear Medicamentos
 
-###Crear Medicamentos
+<img src="./src/main/resources/images/CreateMedicament.png" alt="Creacion de Medicamento"/>
 
-<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
+## Crear Pacientes
 
-Se crean los medicamentos en la base de datos
-
-###Crear Pacientes
-<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
-
+<img src="./src/main/resources/images/CreatePatient.png" alt="Creacion de Paciente"/>
 
 ### Crear Venta
 
-<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
+<img src="./src/main/resources/images/CreateSale.png" alt="Creacion de Venta"/>
 
 
 
 
 
-###Links Pagina Desplegada
+## Links Pagina Desplegada
 
 [Links](https://quickpharma-b8686.web.app/)
 
