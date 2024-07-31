@@ -109,7 +109,7 @@ Antes de comenzar, asegúrate de tener instalado:
    git clone https://github.com/maurogebe/QuickPharma
    cd QuickPharma
 ```
-##Configura las variables de entorno:
+## Configura las variables de entorno:
 
 Crea un archivo .env en la raíz del proyecto y define las siguientes variables:
 ```json
