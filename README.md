@@ -178,11 +178,11 @@ Agradecimientos especiales a todos los colaboradores y mantenedores de este proy
 
 Para preguntas o comentarios, puedes contactarme a través de:
 
-- Email: [tu-email@ejemplo.com](mailto:tu-email@ejemplo.com)
+- Email: [maurogebe.96@gmail.com]
 - LinkedIn: [Mauricio Guerra](https://www.linkedin.com/in/fabian-mauricio-guerra-bedoya))
 
-- Email: [maurogebe.96@gmail.com)
-- LinkedIn: [Eddie Serna](https://www.linkedin.com/in/tu-perfil)
+- Email: [esernaruiz3@gmail.com]
+- LinkedIn: [Eddie Serna]([https://co.linkedin.com/in/eddie-ruiz-backend])
 
 - Email: [Jorgerojas117@hotmail.com]
 - LinkedIn: [Jorge Rojas](www.linkedin.com/in/jorgerojas-developer)
