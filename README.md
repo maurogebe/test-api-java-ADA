@@ -99,8 +99,6 @@ Antes de comenzar, asegúrate de tener instalado:
 
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 - [Maven 3.8.1](https://maven.apache.org/download.cgi)
-- [Node.js 14+](https://nodejs.org/) para el frontend (si aplica)
-- [Docker](https://www.docker.com/) (opcional, para despliegue en contenedores)
 
 ### Instalación
 
