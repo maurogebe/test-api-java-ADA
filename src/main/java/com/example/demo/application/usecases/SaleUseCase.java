@@ -90,14 +90,14 @@ public class SaleUseCase {
                 "      <h1>Factura de Venta</h1>" +
                 "    </div>" +
                 "    <div class='content'>" +
-                "      <p>Estimado/a [Nombre del Cliente],</p>" +
+                "      <p>Estimado/a " + saleSaved.getPatient().getName() + ",</p>" +
                 "      <p>Adjunto a este correo electrónico encontrará la factura correspondiente a la venta realizada en nuestra tienda.</p>" +
                 "      <p>Por favor, revise el archivo adjunto para los detalles completos de la transacción.</p>" +
                 "      <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en ponerse en contacto con nosotros.</p>" +
                 "      <p>Gracias por su compra.</p>" +
                 "    </div>" +
                 "    <div class='footer'>" +
-                "      <p>&copy; [Año] [Nombre de la Empresa]. Todos los derechos reservados.</p>" +
+                "      <p>&copy; 2024 Quick Pharma. Todos los derechos reservados.</p>" +
                 "    </div>" +
                 "  </div>" +
                 "</body>" +
@@ -123,9 +123,9 @@ public class SaleUseCase {
 
         List<MedicamentDTO> medicamentList = medicamentUseCase.getLowStockMedicaments();
 
-        List<MedicamentDTO> medicamentFiltered = medicamentList.stream()
-                .filter(med -> sale.getMedicamentsSold().stream().anyMatch(m -> m.getId() == med.getId()))
-                .toList();
+//        List<MedicamentDTO> medicamentFiltered = medicamentList.stream()
+//                .filter(med -> sale.getMedicamentsSold().stream().anyMatch(m -> m.getId() == med.getId()))
+//                .toList();
 
         if(!medicamentList.isEmpty()) {
             List<PatientDTO> patientsDTO = patientUseCase.getPatients();
