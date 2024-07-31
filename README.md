@@ -11,42 +11,68 @@ La aplicación esta pensanda para actualizar los sistemas de las farmacias tradi
 ### Backend: :hammer_and_wrench:
 
 **Java:** Lenguaje principal para el desarrollo de la lógica de negocio. :coffee:
+
 **Spring Boot:** Framework utilizado para crear servicios web RESTful.:herb:
+
 **Spring Boot Starter Data JPA:** Para la integración con JPA para el manejo de datos. :file_cabinet:
+
 **Spring Boot Starter Web: **Para el desarrollo de aplicaciones web. :globe_with_meridians:
+
 **Spring Boot Starter Security:** Para implementar seguridad en la aplicación. :closed_lock_with_key:
+
 **Spring Boot Starter OAuth2 Resource Server:** Para la implementación de autenticación y autorización con OAuth2.
+
 **Base de Datos:** :card_file_box:
+
 **MySQL:** Sistema de gestión de base de datos utilizado para almacenar la información de la aplicación. :file_cabinet:
+
 **MySQL Connector:** Conector JDBC para MySQL.
+
 **JWT (JSON Web Tokens):**
+
 jjwt-api, jjwt-impl, jjwt-jackson: Bibliotecas para la generación y validación de tokens JWT.
 
 **Correo Electrónico:** :email:
+
 **Mailjet Client:** Para el envío de correos electrónicos a través de Mailjet.
+
 **Generación de Documentos:**
+
 **iText7**: Para la generación de PDFs. :page_facing_up:
+
 **Flying Saucer y OpenPDF:** Herramientas para renderizar y generar documentos PDF. :page_facing_up:
-**Apache PDFBox:** Para la manipulación de documentos PDF. 
+
+**Apache PDFBox:** Para la manipulación de documentos PDF.
+
 **Mapeo de Objetos:**
+
 **MapStruct: **Para la conversión entre objetos Java.
 **Reconocimiento Óptico de Caracteres (OCR)**: :mag:
+
 **Tess4J:** Biblioteca para implementar OCR usando Tesseract con IA. :robot:
+
 **Thymeleaf:** Motor de plantillas para generar vistas dinámicas en el servidor.
+
 **Lombok:** Biblioteca para reducir el código boilerplate en Java. :wrench:
+
 **Testing:**
+
 **JUnit:** Framework de pruebas unitarias. :microscope:
+
 **Spring Boot Starter Test y Spring Security Test:** Para pruebas en la aplicación. :test_tube:
 
 ## ## Frontend
 **React:** Biblioteca JavaScript para la construcción de interfaces de usuario. :atom_symbol:
+
 **Chakra UI:** Framework de componentes de interfaz de usuario para React, que proporciona estilos accesibles y consistentes. :art:
 
 ## Diagramas usados para la elaboracion del proyecto
 ## Diagrama Entidad Relación
-![](https://drive.google.com/file/d/1xxeEBeUvBAE9BW8Gnkk6BcYmYca2vcbK/view)
-##Diagrama UMl
-![](https://drive.google.com/file/d/19TTjK3O5-FhRvaJsrgiAw3eHejMZQnNi/view)
+
+<img src="https://drive.google.com/file/d/1xxeEBeUvBAE9BW8Gnkk6BcYmYca2vcbK/view>
+## Diagrama UMl
+
+<img src="https://drive.google.com/file/d/19TTjK3O5-FhRvaJsrgiAw3eHejMZQnNi/view>
 
 # Soluciones Propuestas: 💡 - :bulb:
 
@@ -119,17 +145,17 @@ H2 Header (Underline)
 
 ###Crear Medicamentos
 
-![](https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T)
+<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
 
 Se crean los medicamentos en la base de datos
 
 ###Crear Pacientes
-![](https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T)
+<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
 
 
 ### Crear Venta
 
-![](https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T)
+<img src="https://drive.google.com/drive/u/0/folders/1HAFJVfd911SC71xuoIZpnVHImvJXWb6T>
 
 
 
@@ -188,8 +214,4 @@ Estamos agradecidos por el conocimiento y lo aprendido durante todo este tiempo 
 gracias a los conocimientos adquiridos durante el mismo fue posible la realización de este proyecto, 
 nuestra idea es seguir creciendo como profesionales en el sector TI afianzar estos conocimientos y seguir mejorando cada dia enfrentando retos que nos den mas experiencia y habilidades.
 
-Muchas gracias.
-
-
-
-###End
+## Muchas gracias.
