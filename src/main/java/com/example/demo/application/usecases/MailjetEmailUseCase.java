@@ -28,13 +28,19 @@ public class MailjetEmailUseCase {
 
     @Value("${mailjet.api.secret}")
     private String apiSecret;
+    
+    @Value("${mailjet.api.email}")
+    private String email;
+    
+    @Value("${mailjet.api.message}")
+    private String message;
 
     public void sendEmail(List<String> emailsTo, String subject, String body) throws MailjetException {
         try {
             ClientOptions options = ClientOptions.builder()
-                    .apiKey(apiKey)
-                    .apiSecretKey(apiSecret)
-                    .build();
+                .apiKey(apiKey)
+                .apiSecretKey(apiSecret)
+                .build();
             MailjetClient client = new MailjetClient(options);
 
             List<SendContact> emails = new ArrayList<>();
@@ -43,20 +49,20 @@ public class MailjetEmailUseCase {
             }
 
             TransactionalEmail message1 = TransactionalEmail
-                    .builder()
-                    .to(emails)
-                    .from(new SendContact("maurogebe.96@gmail.com", "Mailjet integration test"))
-                    .htmlPart(body)
-                    .subject(subject)
-                    .trackOpens(TrackOpens.ENABLED)
-                    .header("test-header-key", "test-value")
-                    .customID("custom-id-value")
-                    .build();
+                .builder()
+                .to(emails)
+                .from(new SendContact(email, message))
+                .htmlPart(body)
+                .subject(subject)
+                .trackOpens(TrackOpens.ENABLED)
+                .header("test-header-key", "test-value")
+                .customID("custom-id-value")
+                .build();
 
             SendEmailsRequest request = SendEmailsRequest
-                    .builder()
-                    .message(message1)
-                    .build();
+                .builder()
+                .message(message1)
+                .build();
 
             request.sendWith(client);
         } catch (RuntimeException e) {
@@ -67,9 +73,9 @@ public class MailjetEmailUseCase {
     public void sendEmailWithAttachment(List<String> emailsTo, String subject, String body, Attachment attachment) throws MailjetException {
         try {
             ClientOptions options = ClientOptions.builder()
-                    .apiKey(apiKey)
-                    .apiSecretKey(apiSecret)
-                    .build();
+                .apiKey(apiKey)
+                .apiSecretKey(apiSecret)
+                .build();
             MailjetClient client = new MailjetClient(options);
 
             List<SendContact> emails = new ArrayList<>();
@@ -78,21 +84,21 @@ public class MailjetEmailUseCase {
             }
 
             TransactionalEmail message1 = TransactionalEmail
-                    .builder()
-                    .to(emails)
-                    .from(new SendContact("maurogebe.96@gmail.com", "Mailjet integration test"))
-                    .htmlPart(body)
-                    .subject(subject)
-                    .trackOpens(TrackOpens.ENABLED)
-                    .attachment(attachment)
-                    .header("test-header-key", "test-value")
-                    .customID("custom-id-value")
-                    .build();
+                .builder()
+                .to(emails)
+                .from(new SendContact(email, message))
+                .htmlPart(body)
+                .subject(subject)
+                .trackOpens(TrackOpens.ENABLED)
+                .attachment(attachment)
+                .header("test-header-key", "test-value")
+                .customID("custom-id-value")
+                .build();
 
             SendEmailsRequest request = SendEmailsRequest
-                    .builder()
-                    .message(message1)
-                    .build();
+                .builder()
+                .message(message1)
+                .build();
 
             request.sendWith(client);
         } catch (RuntimeException e) {

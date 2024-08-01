@@ -1,5 +1,6 @@
 package com.example.demo.application.mappers;
 
+import com.example.demo.application.dtos.UserDTO;
 import com.example.demo.application.dtos.UserResponseDTO;
 import com.example.demo.domain.entities.User;
 import org.mapstruct.Mapper;
@@ -12,8 +13,12 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
 
-    UserResponseDTO userToUserResponseDTO(User user);
+    UserDTO userToUserDTO(User user);
 
+    User userDTOToUser(UserDTO userDTO);
+    
+    UserResponseDTO userToUserResponseDTO(User user);
+    
     User userResponseDTOToUser(UserResponseDTO userDTO);
 
 }

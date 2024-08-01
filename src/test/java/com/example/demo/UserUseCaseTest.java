@@ -1,4 +1,5 @@
 package com.example.demo;
+import com.example.demo.application.dtos.UserDTO;
 import com.example.demo.application.dtos.UserResponseDTO;
 import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.UserMapper;
@@ -38,7 +39,7 @@ public class UserUseCaseTest {
     @Test
     public void testCreateUser_Success() {
         // Arrange
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setPassword("plainPassword");
         when(encoder.encode(any(String.class))).thenReturn("encodedPassword");
 
@@ -47,7 +48,7 @@ public class UserUseCaseTest {
 
         // Assert
         verify(encoder, times(1)).encode("plainPassword");
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(UserMapper.INSTANCE.userDTOToUser(user));
         assertEquals("encodedPassword", user.getPassword());
     }
 
@@ -88,7 +89,7 @@ public class UserUseCaseTest {
         // Arrange
         User user = new User();
         user.setEmail("user@example.com");
-        when(userRepository.findUserByEmail(anyString())).thenReturn(user);
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
 
         // Act
         User result = userUseCase.getUserByEmail("user@example.com");
@@ -96,6 +97,6 @@ public class UserUseCaseTest {
         // Assert
         assertNotNull(result);
         assertEquals("user@example.com", result.getEmail());
-        verify(userRepository, times(1)).findUserByEmail("user@example.com");
+        verify(userRepository, times(1)).findByEmail("user@example.com");
     }
 }

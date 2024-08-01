@@ -44,7 +44,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
                 .requestMatchers(HttpMethod.GET, "/status").permitAll()
                 // *** Permitir acceso sin autenticación a Swagger ***
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .requestMatchers("/actuator/**").permitAll()
             .anyRequest().authenticated();
         return urlRegistry;
     }

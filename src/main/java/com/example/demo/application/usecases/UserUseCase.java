@@ -1,17 +1,15 @@
 package com.example.demo.application.usecases;
 
+import com.example.demo.application.dtos.UserDTO;
 import com.example.demo.application.dtos.UserResponseDTO;
 import com.example.demo.application.exeptions.ApiRequestException;
 import com.example.demo.application.mappers.UserMapper;
-import com.example.demo.domain.entities.Sale;
 import com.example.demo.domain.entities.User;
 import com.example.demo.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.Optional;
 
@@ -36,12 +34,16 @@ public class UserUseCase {
         return UserMapper.INSTANCE.userToUserResponseDTO(userById.get());
     }
 
-    public void createUser(User user) {
+    public void createUser(UserDTO user) {
+        Optional<User> userByEmail = this.userRepository.findByEmail(user.getEmail());
+        if(userByEmail.isPresent()) throw new ApiRequestException("Ya existe un usuario con este correo: " + user.getEmail(), HttpStatus.BAD_REQUEST);
         user.setPassword(this.encoder.encode(user.getPassword()));
-        this.userRepository.save(user);
+        this.userRepository.save(UserMapper.INSTANCE.userDTOToUser(user));
     }
 
     public User getUserByEmail(String email) {
-        return this.userRepository.findUserByEmail(email);
+        Optional<User> userByEmail = this.userRepository.findByEmail(email);
+        if(userByEmail.isEmpty()) throw new ApiRequestException("No se encontró el usuario con email " + email, HttpStatus.NOT_FOUND);
+        return userByEmail.get();
     }
 }

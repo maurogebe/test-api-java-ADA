@@ -1,5 +1,6 @@
 package com.example.demo.application.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,9 +8,14 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 public class UserResponseDTO {
-
-    private Long id;
+    
+    @JsonProperty("firstName")
     private String firstName;
-    private String LastName;
+    
+    @JsonProperty("lastName")
+    private String lastName;
+    
+    @JsonProperty("email")
     private String email;
+
 }
