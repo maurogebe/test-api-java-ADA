@@ -67,12 +67,12 @@ Para clonar este repositorio y ejecutar la aplicación localmente, sigue estos p
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/tu_usuario/tu_repositorio.git
+    git clone https://github.com/maurogebe/template-api-spring-boot.git
     ```
 
 2. Navega al directorio del proyecto:
     ```bash
-    cd tu_repositorio
+    cd template-api-spring-boot
     ```
 
 3. Construye el proyecto usando Gradle:
